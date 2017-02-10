@@ -35,3 +35,4 @@ vignettes/*.pdf
 #
 credentials.RData
 tmp/*.csv*
+.Rproj.user

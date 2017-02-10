@@ -60,6 +60,10 @@ exp.analysis <- function(test_ids, control_ids, start_day, end_day, num_splits =
       ungroup() %>%
       as.data.frame()
     
+    library(ggplot2)
+    print(ggplot(data = tmp.data, aes(test_bucket_id, cpa_order_is_billed_num)) +
+            geom_boxplot() +
+            ggtitle(paste0("pplevel = ", pplevel)))
     
     for (control_id in control_ids){
       for (test_id in test_ids){
