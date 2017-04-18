@@ -61,7 +61,7 @@ exp.analysis <- function(test_ids, control_ids, start_day, end_day, num_splits =
       as.data.frame()
     
     library(ggplot2)
-    print(ggplot(data = tmp.data, aes(test_bucket_id, cpa_order_is_billed_num)) +
+    print(ggplot(data = tmp.data, aes(test_bucket_id, cpc_clicks_price)) +
             geom_boxplot() +
             ggtitle(paste0("pplevel = ", pplevel)))
     
@@ -104,4 +104,4 @@ ma1968.result <- exp.analysis(test_ids = c(36208, 36207), control_ids = c(36206)
 ma1908.result <- exp.analysis(test_ids = c(35250), control_ids = c(35251),
                               start_day = "2016-12-01", end_day = "2016-12-07",
                               num_splits = num.splits)
-
+ 

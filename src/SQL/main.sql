@@ -1,9 +1,9 @@
 set hive.ppd.remove.duplicatefilters = false;
-set start_date = '2016-12-01';
-set end_date = '2017-01-08';
+set start_date = '2017-01-28';
+set end_date = '2017-02-08';
 
 DROP TABLE IF EXISTS medintsev.ms_expres_cpa_clicks;
-CREATE TABLE medintsev.ms_expres_cpa_clicks AS
+CREATE TEMPORARY TABLE medintsev.ms_expres_cpa_clicks AS
 SELECT
   ware_md5,
   block_id,
@@ -49,7 +49,7 @@ FROM (
 ) ms_cpa_clicks_filtered LATERAL VIEW explode(split(test_buckets, ';')) tmp_table AS splits_data;
 
 DROP TABLE IF EXISTS medintsev.ms_expres_cpc_clicks;
-CREATE TABLE medintsev.ms_expres_cpc_clicks AS
+CREATE TEMPORARY TABLE medintsev.ms_expres_cpc_clicks AS
 SELECT
   ware_md5,
   block_id,
@@ -94,7 +94,7 @@ FROM (
 ) ms_cpa_clicks_filtered LATERAL VIEW explode(split(test_buckets, ';')) tmp_table AS splits_data;
 
 DROP TABLE IF EXISTS medintsev.ms_expres_cpa_orders;
-CREATE TABLE medintsev.ms_expres_cpa_orders AS
+CREATE TEMPORARY TABLE medintsev.ms_expres_cpa_orders AS
 SELECT
   ware_md5,
   block_id,
@@ -120,6 +120,7 @@ FROM (
 WHERE rn = 1;
 
 DROP TABLE IF EXISTS medintsev.ms_expres_pre_result;
+-- TEMPORARY тут нельзя, так как не видно такую таблицу через JDBC
 CREATE TABLE medintsev.ms_expres_pre_result AS
 SELECT
   ms_clicks.click_type,
