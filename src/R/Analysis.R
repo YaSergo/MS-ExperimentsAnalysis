@@ -3,7 +3,7 @@ library(ggplot2)
 
 source("GetDataFromHIVE.R")
 
-num.splits <- 25 # 100, 50, 25, 20, ...
+num.splits <- 20 # 100, 50, 25, 20, ...
 p.value.threshold <- 0.05 # порог для стат. значимости
 
 if (!file.exists("./credentials.RData")){
@@ -82,14 +82,16 @@ exp.analysis <- function(test_ids, control_ids, start_day, end_day, num_splits =
             test_mean = round(mean(test.vector), 2),
             delta = round(mean(test.vector) - mean(control.vector), 2),
             rate = round(mean(test.vector) / mean(control.vector) - 1, 3),
-            p.value = round(t.test(x = test.vector, y = control.vector)$p.value, 3)
+            p.value.TT = round(t.test(x = test.vector, y = control.vector)$p.value, 3),
+            p.value.MW = round(wilcox.test(x = test.vector, y = control.vector)$p.value, 3)
           )
           
         }
       }
     }
     result <- Reduce(f = rbind, x = result.list)
-    result$stat.significant <- ifelse(result$p.value < p.value.threshold, TRUE, FALSE)
+    result$stat.significant.TT <- ifelse(result$p.value.TT < p.value.threshold, TRUE, FALSE)
+    result$stat.significant.MW <- ifelse(result$p.value.MW < p.value.threshold, TRUE, FALSE)
   }
   
   return(result)
@@ -104,4 +106,4 @@ ma1968.result <- exp.analysis(test_ids = c(36208, 36207), control_ids = c(36206)
 ma1908.result <- exp.analysis(test_ids = c(35250), control_ids = c(35251),
                               start_day = "2016-12-01", end_day = "2016-12-07",
                               num_splits = num.splits)
- 
+
