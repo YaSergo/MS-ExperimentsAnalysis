@@ -7,12 +7,17 @@ SELECT
 
   SUM(IF(click_type = 'cpc', 1, 0)) AS cpc_clicks_num,
   SUM(IF(click_type = 'cpa', 1, 0)) AS cpa_clicks_num,
-  SUM(IF(click_type = 'cpc', price, 0)) AS cpc_clicks_price,
-  SUM(IF(click_type = 'cpa', cpa_order_is_billed, 0)) AS cpa_order_is_billed_num,
-  SUM(IF(click_type = 'cpa', revenue_is_billed, 0)) AS cpa_order_is_billed_revenue,
+  SUM(IF(click_type = 'cpc', click_price_rub, 0)) AS cpc_clicks_price, -- в рублях
+
+  SUM(IF(click_type = 'cpc', orders_num, 0)) AS cpc_orders_num,
+  SUM(IF(click_type = 'cpa', orders_num, 0)) AS cpa_orders_num,
+
+  SUM(IF(click_type = 'cpa', order_is_billed, 0)) AS cpa_order_is_billed_num,
+  SUM(IF(click_type = 'cpa', revenue_is_billed_rub, 0)) AS cpa_order_is_billed_revenue, -- в рублях
 
   COUNT(*) AS all_clicks_num,
-  COALESCE(SUM(price), 0) + COALESCE(SUM(revenue_is_billed), 0) AS all_money
+  COALESCE(SUM(click_price_rub), 0) + COALESCE(SUM(revenue_is_billed_rub), 0) AS all_money,
+  COALESCE(SUM(orders_num), 0) AS all_orders
 
 FROM medintsev.ms_expres_pre_result
 WHERE
